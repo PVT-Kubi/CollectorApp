@@ -34,9 +34,9 @@ namespace CollectorApp.Models
                 for(int j = 0; j < itemsData.Length; j++)
                 {
                     string[] itemData = itemsData[j].Split("\t");
-                    if(j == 0) 
+                    if(j == 1) 
                         itemColumns = itemData;
-                    else
+                    else if(j > 1)
                     {
                         Item item = new Item();
                         for(int k = 0; k < itemData.Length; k++)

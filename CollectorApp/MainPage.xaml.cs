@@ -1,15 +1,17 @@
-﻿using Java.Lang;
+﻿
 
 namespace CollectorApp
 {
     public partial class MainPage : ContentPage
     {
         Models.Collection currentCollection = new Models.Collection();
+
         public MainPage()
         {
             InitializeComponent();
             BindingContext = new Models.AllCollections();
         }
+
         protected override void OnAppearing()
         {
             ((Models.AllCollections)BindingContext).LoadCollections();
@@ -21,12 +23,12 @@ namespace CollectorApp
             {
                 Models.Collection collection = (Models.Collection)e.CurrentSelection[0];
                 currentCollection = collection;
-                classCollection.SelectedItem = null;
-                await Shell.Current.GoToAsync($"//{nameof(CollectionItems)}?{nameof(CollectionItems.ItemId)}={collection.CollectionName}");
+                collectionsCollection.SelectedItem = null;
+                await Shell.Current.GoToAsync($"//{nameof(Views.CollectionItems)}?{nameof(Views.CollectionItems.ItemId)}={collection.CollectionName}");
             }
         }
 
-        private async void Add_Class(object sender, EventArgs e)
+        private async void Add_Collection(object sender, EventArgs e)
         {
             int i = ((Models.AllCollections)BindingContext).AddCollection(CollectionName.Text);
             if (i != 0)
@@ -36,14 +38,15 @@ namespace CollectorApp
                 else
                     await DisplayAlert("aler", "Cos innego sie zesralo", "OK");
             }
-            ((Models.AllClasses)BindingContext).LoadClasses();
+            ((Models.AllCollections)BindingContext).LoadCollections();
         }
 
-        private void Delete_Class_Button_Clicked(object sender, EventArgs e)
+        private void Delete_Collection_Button_Clicked(object sender, EventArgs e)
         {
-            ((Models.AllClasses)BindingContext).DeleteClass(currentClass.ClassNumber);
-            ((Models.AllClasses)BindingContext).LoadClasses();
+            ((Models.AllCollections)BindingContext).DeleteCollection(currentCollection.CollectionName);
+            ((Models.AllCollections)BindingContext).LoadCollections();
         }
+
     }
 
 }
