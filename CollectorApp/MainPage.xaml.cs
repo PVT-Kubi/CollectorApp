@@ -1,24 +1,48 @@
-﻿namespace CollectorApp
+﻿using Java.Lang;
+
+namespace CollectorApp
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
+        Models.Collection currentCollection = new Models.Collection();
         public MainPage()
         {
             InitializeComponent();
+            BindingContext = new Models.AllCollections();
+        }
+        protected override void OnAppearing()
+        {
+            ((Models.AllCollections)BindingContext).LoadCollections();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private async void collectionCollection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            count++;
+            if (e.CurrentSelection.Count > 0)
+            {
+                Models.Collection collection = (Models.Collection)e.CurrentSelection[0];
+                currentCollection = collection;
+                classCollection.SelectedItem = null;
+                await Shell.Current.GoToAsync($"//{nameof(CollectionItems)}?{nameof(CollectionItems.ItemId)}={collection.CollectionName}");
+            }
+        }
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
+        private async void Add_Class(object sender, EventArgs e)
+        {
+            int i = ((Models.AllCollections)BindingContext).AddCollection(CollectionName.Text);
+            if (i != 0)
+            {
+                if (i == 1)
+                    await DisplayAlert("Alert", "You have been alerted", "OK");
+                else
+                    await DisplayAlert("aler", "Cos innego sie zesralo", "OK");
+            }
+            ((Models.AllClasses)BindingContext).LoadClasses();
+        }
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+        private void Delete_Class_Button_Clicked(object sender, EventArgs e)
+        {
+            ((Models.AllClasses)BindingContext).DeleteClass(currentClass.ClassNumber);
+            ((Models.AllClasses)BindingContext).LoadClasses();
         }
     }
 
