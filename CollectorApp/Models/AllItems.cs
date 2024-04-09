@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,16 +30,17 @@ namespace CollectorApp.Models
             {
                 string text = File.ReadAllText(Path.Combine(path, $"{cName}.cl.txt"));
                 string[] itemsData = text.Split('\n');
-                string[] itemColumns = {};
+                List<string> itemColumns = new List<string>();
 
                 for(int j = 0; j < itemsData.Length; j++)
                 {
                     string[] itemData = itemsData[j].Split("\t");
-                    if(j == 1) 
-                        itemColumns = itemData;
+                    if (j == 1) 
+                        itemColumns.AddRange(itemData);
                     else if(j > 1)
                     {
                         Item item = new Item();
+                        
                         for(int k = 0; k < itemData.Length; k++)
                         {
                             if (item.Data.ContainsKey(itemColumns[k]))
@@ -63,22 +65,26 @@ namespace CollectorApp.Models
 
         public int AddItem(string cName, Dictionary<string, dynamic> data)
         {
-            string path = Path.Combine(FileSystem.AppDataDirectory, $"{cName}");
+            string path = Path.Combine(FileSystem.AppDataDirectory, $"{cName}.cl.txt");
             if (!File.Exists(path))
                 return 1;
 
             Item item = new Item();
             item.Data = data;
             string text = File.ReadAllText(path);
-            string itemData = text + "\n";
+            string itemData = text;
             bool first= false;
             foreach(var i in data)
             {
-                if (first) {
-                    itemData += $"{i.Value}";
+                if (!first)
+                {
+                    itemData += $"\n{i.Key}";
                     first = true;
                 }
-                itemData += $"\t{i.Value}";
+                else
+                {
+                    itemData += $"\t{i.Key}";
+                }
             }
 
             File.WriteAllText(path, itemData);

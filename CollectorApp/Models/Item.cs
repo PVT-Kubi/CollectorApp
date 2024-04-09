@@ -11,6 +11,7 @@ namespace CollectorApp.Models
         public Dictionary<string, dynamic> Data { get; set; }
 
         public Item() {
+            Data = new Dictionary<string, dynamic>();   
             Data.Add("Name", "");
             Data.Add("Price", 0);
             Data.Add("State", "");

@@ -5,6 +5,15 @@
              xmlns:v="clr-namespace:CollectorApp.Views"
              Title="CollectionItems">
     <VerticalStackLayout>
+        <HorizontalStackLayout StyleClass="formInput">
+            <Editor HeightRequest="10" Placeholder="Enter counter name" x:Name="StudentName"/>
+            <Editor HeightRequest="10" Placeholder="Enter default value" x:Name="StudentSurname"/>
+            <Button Text="Dodaj ucznia" Clicked="Add_Student" StyleClass="addButton"/>
+            <Button Text="Wróć" Clicked="ReturnButtonClicked" />
+        </HorizontalStackLayout>
+
+
+
         <CollectionView x:Name="colletionsCollection"
                  ItemsSource="{Binding Items}"
                  Margin="20"
