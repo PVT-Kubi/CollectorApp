@@ -4,9 +4,9 @@
              x:Class="CollectorApp.Views.CollectionSummary"
              Title="CollectionSummary">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <Label x:Name="itemsCount"/>
+        <Label x:Name="selledCount"/>
+        <Label x:Name="toSellCount"/>
+        <Button Text="Return" Clicked="ReturnButtonClicked" />
     </VerticalStackLayout>
 </ContentPage>

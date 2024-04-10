@@ -73,7 +73,7 @@ public partial class CollectionItems : ContentPage
     }
     private async void SummaryButtonClicked(object sender, EventArgs e)
     {
-        
+        await Shell.Current.GoToAsync($"//{nameof(Views.CollectionSummary)}?{nameof(Views.CollectionSummary.CollectionName)}={((Models.AllItems)BindingContext).collectionName}");
     }
 
 

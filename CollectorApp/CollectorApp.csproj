@@ -69,6 +69,9 @@
 	  <MauiXaml Update="Views\CollectionItems.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\CollectionSummary.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\EditItem.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
