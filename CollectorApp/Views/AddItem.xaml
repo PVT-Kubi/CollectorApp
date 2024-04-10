@@ -4,7 +4,7 @@
              x:Class="CollectorApp.Views.AddItem"
              Title="AddItem">
     <VerticalStackLayout>
-        <CollectionView x:Name="itemValuesCollection"
+        <!--<CollectionView x:Name="itemValuesCollection"
          ItemsSource="{Binding ItemTypes}"
          Margin="20"
          SelectionMode="Single"
@@ -23,10 +23,11 @@
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-        </CollectionView>
-        <HorizontalStackLayout>
+        </CollectionView>-->
+        <!--<HorizontalStackLayout>
             <Button Text="Add item" Clicked="Add_Item"/>
             <Button Text="Return" Clicked="ReturnButtonClicked" />
         </HorizontalStackLayout>
+    </VerticalStackLayout>-->
     </VerticalStackLayout>
 </ContentPage>

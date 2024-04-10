@@ -11,10 +11,14 @@ namespace CollectorApp.Models
     internal class AllItems
     {
         public ObservableCollection<Item> Items { get; set; } = new ObservableCollection<Item>();
-        public ObservableCollection<string> ItemTypes { get; set; } = new ObservableCollection<string>();
+        public Dictionary<string, string> ItemTypes { get; set; } = new Dictionary<string, string>();
+        public List<string> columnTypes { get; set; } = new List<string>();
         public string collectionName;
         public AllItems(string collectionName) {
             this.collectionName = collectionName;
+            this.columnTypes.Add("string");
+            this.columnTypes.Add("integer");
+            this.columnTypes.Add("multiple-choice");
             LoadItems(collectionName);
         }
 
@@ -44,13 +48,13 @@ namespace CollectorApp.Models
                         
                         for(int k = 0; k < itemData.Length; k++)
                         {
-                            if (item.Data.ContainsKey(itemColumns[k]))
+                            if (item.Data.ContainsKey(itemColumns[k].Split(";")[0]))
                             {
-                                item.Data[itemColumns[k]] = itemData[k];
+                                item.Data[itemColumns[k].Split(";")[0]] = itemData[k];
                             }
                             else
                             {
-                                item.Data.Add(itemColumns[k], itemData[k]);
+                                item.Data.Add(itemColumns[k].Split(";")[0], itemData[k]);
                             }
                         }
                         items.Add(item);
@@ -60,7 +64,9 @@ namespace CollectorApp.Models
                 }
                 foreach(string column in itemColumns)
                 {
-                    ItemTypes.Add(column);
+                    string[] columnSplit = column.Split(";");
+                    if (!ItemTypes.ContainsKey(columnSplit[0]))
+                        ItemTypes.Add(columnSplit[0], columnSplit[1]);
                 }
 
                 foreach (Item item in items)
@@ -100,10 +106,10 @@ namespace CollectorApp.Models
             return 0;
         }
 
-        public void AddColumn(string cName, string columnName)
+        public void AddColumn(string cName, string columnName, string columnType)
         {
-            Item item = Items[0];
-            if(!item.Data.ContainsKey(columnName))
+           
+            if(!ItemTypes.ContainsKey(columnName))
             {
                 string path = Path.Combine(FileSystem.AppDataDirectory, $"{cName}.cl.txt");
                 string text = File.ReadAllText(path);
@@ -114,7 +120,7 @@ namespace CollectorApp.Models
                 {
                     if (counter == 1)
                     {
-                        newText += "\n" + s + $"\t{columnName}";
+                        newText += "\n" + s + $"\t{columnName};{columnType}";
                         counter ++;
                     }
                     else if(counter > 1)
@@ -127,7 +133,7 @@ namespace CollectorApp.Models
                         counter++;
                     }
                 }
-                ItemTypes.Add(collectionName);
+                ItemTypes.Add(columnName, columnType);
                 
                 File.WriteAllText (path, newText);
             }
