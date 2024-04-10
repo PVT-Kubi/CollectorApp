@@ -111,6 +111,16 @@ public partial class AddItem : ContentPage
         {
             foreach(var item in ((Models.AllItems)BindingContext).ItemTypes)
             {
+                if(item.Value == "int" && !int.TryParse(valuesOfEditors[i], out _))
+                {
+                    await DisplayAlert("Alert", $"Field {item.Key} has incorrect type!", "OK");
+                    return;
+                }else if(item.Key == "Rating" && (int.Parse(valuesOfEditors[i]) > 10 || int.Parse(valuesOfEditors[i]) < 1))
+                {
+                    await DisplayAlert("Alert", $"Field {item.Key} can only have values between 1-10!", "OK");
+                    return;
+                }
+                
                 d.Add(item.Key, valuesOfEditors[i]);
                 i++;
             }
