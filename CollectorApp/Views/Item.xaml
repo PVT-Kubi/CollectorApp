@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CollectorApp.Views.Item"
              x:Name="this">
-    <Frame BindingContext="{x:Reference this}">
+    <Frame BindingContext="{x:Reference this}" BackgroundColor="#10454F" x:Name="backgroundFrame">
         <ScrollView>
             <HorizontalStackLayout>
                 <Image

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CollectorApp.MainPage">
 
-    <ScrollView>
+    <ScrollView BackgroundColor="#506266">
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
@@ -26,10 +26,12 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout>
-                            <Label Text="{Binding CollectionName}"  />
-                            <Button Text="Delete collection" Clicked="Delete_Collection_Button_Clicked"/>
-                        </StackLayout>
+                        <Frame BackgroundColor="#10454F">
+                            <StackLayout>
+                                <Label Text="{Binding CollectionName}"  FontSize="Large" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                <Button Text="Delete collection" Clicked="Delete_Collection_Button_Clicked"/>
+                            </StackLayout>
+                        </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

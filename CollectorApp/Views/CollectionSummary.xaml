@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CollectorApp.Views.CollectionSummary"
              Title="CollectionSummary">
-    <VerticalStackLayout>
+    <VerticalStackLayout BackgroundColor="#506266">
         <Label x:Name="itemsCount"/>
         <Label x:Name="selledCount"/>
         <Label x:Name="toSellCount"/>

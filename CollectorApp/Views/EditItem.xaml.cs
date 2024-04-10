@@ -96,6 +96,7 @@ public partial class EditItem : ContentPage
         mainPageStackLayout.Add(ReturnButton);
         mainPageStackLayout.Add(DeleteButton);
         ScrollView mainPageScrollView = new ScrollView { Content = mainPageStackLayout };
+        mainPageScrollView.BackgroundColor = Color.FromHex("#10454F");
         Content = mainPageScrollView;
         BatchCommit();
 

@@ -79,6 +79,7 @@ public partial class AddItem : ContentPage
         mainPageStackLayout.Add(AddButton);
         mainPageStackLayout.Add(ReturnButton);
         ScrollView mainPageScrollView = new ScrollView { Content = mainPageStackLayout };
+        mainPageScrollView.BackgroundColor = Color.FromHex("#10454F");
         Content = mainPageScrollView;
         BatchCommit();
 

@@ -24,5 +24,13 @@ public partial class Item : ContentView
         {
             barcodeImage.Source = ItemData["Picture"];
         }
+
+        if(BindingContext != null && ItemData != null)
+        {
+            if (ItemData["State"] == "sprzedany")
+            {
+                backgroundFrame.BackgroundColor = Color.FromHex("#8ca0a3");
+            }
+        }
     }
 }

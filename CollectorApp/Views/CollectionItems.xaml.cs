@@ -22,7 +22,6 @@ public partial class CollectionItems : ContentPage
         BindingContext = new Models.AllItems(name);
         
     }
-
     private async void ReturnButtonClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
