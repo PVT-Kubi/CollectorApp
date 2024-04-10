@@ -1,5 +1,7 @@
 ﻿
 
+using System.Diagnostics;
+
 namespace CollectorApp
 {
     public partial class MainPage : ContentPage
@@ -10,6 +12,7 @@ namespace CollectorApp
         {
             InitializeComponent();
             BindingContext = new Models.AllCollections();
+            Trace.WriteLine(FileSystem.AppDataDirectory);
         }
 
         protected override void OnAppearing()
