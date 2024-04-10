@@ -24,6 +24,38 @@ namespace CollectorApp.Models
 
         public string getColllectionName() { return this.collectionName; }
 
+        public void sortSelledItems(string path)
+        {
+            string text = File.ReadAllText(path);
+            string[] itemsData = text.Split('\n');
+            List<string>forwardItems = new List<string>();
+            List<string> lastItems = new List<string>();
+            foreach (string item in itemsData) 
+            {
+                string[] itemData = item.Split('\t');
+                if (itemData.Length > 1)
+                {
+                    if (itemData[2] == "sprzedany")
+                        lastItems.Add(item);
+                    else
+                        forwardItems.Add(item);
+                }
+                else
+                {
+                    forwardItems.Add(item);
+                }
+
+            }
+
+            forwardItems.AddRange(lastItems);
+            string new_text = string.Join("\n", forwardItems);
+            if(File.Exists(path))
+            {
+                File.WriteAllText(path, new_text);
+            }
+            
+        }
+
         public void LoadItems(string cName)
         {
             Items.Clear();
@@ -33,6 +65,8 @@ namespace CollectorApp.Models
 
             if (File.Exists(Path.Combine(path, $"{cName}.cl.txt")))
             {
+                
+                sortSelledItems(Path.Combine(path, $"{cName}.cl.txt"));
                 string text = File.ReadAllText(Path.Combine(path, $"{cName}.cl.txt"));
                 string[] itemsData = text.Split('\n');
                 List<string> itemColumns = new List<string>();
@@ -69,6 +103,8 @@ namespace CollectorApp.Models
                         ItemTypes.Add(columnSplit[0], columnSplit[1]);
                 }
 
+                //i know it's stupid but i don't have energy to use brain anymore
+                Item lastItem = new Item();
                 foreach (Item item in items)
                 {
                     Items.Add(item);
