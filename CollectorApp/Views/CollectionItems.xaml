@@ -25,6 +25,7 @@
                  ItemsSource="{Binding Items}"
                  Margin="20"
                  SelectionMode="Single"
+                 SelectionChanged="selectedItem"
                  >
 
 

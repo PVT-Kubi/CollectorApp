@@ -40,6 +40,18 @@ public partial class CollectionItems : ContentPage
         }
     }
 
+    private async void selectedItem(object sender, SelectionChangedEventArgs e)
+    {
+        
+        if (e.CurrentSelection.Count > 0)
+        {
+            
+            Models.Item item = (Models.Item)e.CurrentSelection[0];
+            colletionsCollection.SelectedItem = null;
+            await Shell.Current.GoToAsync($"//{nameof(Views.EditItem)}?{nameof(Views.EditItem.ItemData)}={((Models.AllItems)BindingContext).collectionName}_{item.Data["Name"]}");
+        }
+    }
+
     private async void Add_Item(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync($"//{nameof(Views.AddItem)}?{nameof(Views.AddItem.CollectionName)}={((Models.AllItems)BindingContext).collectionName}");

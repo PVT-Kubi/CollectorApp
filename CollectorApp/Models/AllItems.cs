@@ -106,6 +106,69 @@ namespace CollectorApp.Models
             return 0;
         }
 
+        public Item getItem(string iName)
+        {
+            foreach (Item item in Items)
+            {
+                if (item.Data["Name"] == iName)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        public int getItemIndex(string iName)
+        {
+
+            foreach (Item item in Items)
+            {
+                if (item.Data["Name"] == iName)
+                {
+                    return Items.IndexOf(item);
+                }
+            }
+            return 0;
+           
+        }
+
+        public int EditItem(string cName, Dictionary<string, dynamic> data, int itemIndex)
+        {
+            string path = Path.Combine(FileSystem.AppDataDirectory, $"{cName}.cl.txt");
+            if (!File.Exists(path))
+                return 1;
+
+            Item item = new Item();
+            item.Data = data;
+            string text = File.ReadAllText(path);
+            string[] itemsData = text.Split('\n');
+            for(int i = 0; i < itemsData.Length; i++)
+            {
+                if(i == itemIndex + 2)
+                {
+                    itemsData[i] = "";
+                    bool first = true;
+                    foreach(var itemData in data)
+                    {
+                        if (first)
+                        {
+                            itemsData[i] += $"{itemData.Value}";
+                            first = false;
+                        }
+                        else
+                        {
+                            itemsData[i] += $"\t{itemData.Value}";
+                        }
+                    }
+
+                }
+            }
+            string newData = string.Join("\n", itemsData);
+            File.WriteAllText(path, newData);
+            Items[itemIndex] = item;
+            return 0;
+        }
+
         public void AddColumn(string cName, string columnName, string columnType)
         {
            

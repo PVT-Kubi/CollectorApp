@@ -1,33 +1,36 @@
 using CollectorApp.Models;
-using Microsoft.Maui.Controls;
-using System.Collections;
 
 namespace CollectorApp.Views;
-
-
-[QueryProperty(nameof(CollectionName), nameof(CollectionName))]
-public partial class AddItem : ContentPage
+[QueryProperty(nameof(ItemData), nameof(ItemData))]
+public partial class EditItem : ContentPage
 {
     List<dynamic> allFields = new List<dynamic>();
-    public string CollectionName
+    Dictionary<string, dynamic> itemData = new Dictionary<string, dynamic>();
+    public int itemIndex = 0; 
+    public string ItemData
     {
         set { LoadItems(value); }
     }
-    public AddItem()
+    public EditItem()
 	{
-        InitializeComponent();
-    }
+		InitializeComponent();
+	}
 
-    public void LoadItems(string name)
+    public void LoadItems(string itemName)
     {
-        BindingContext = new Models.AllItems(name);
+        string[] s = itemName.Split('_');
+        BindingContext = new Models.AllItems(s[0]);
+        itemData = ((Models.AllItems)BindingContext).getItem(s[1]).Data;
+        itemIndex = ((Models.AllItems)BindingContext).getItemIndex(s[1]);
+
+
         BatchBegin();
         VerticalStackLayout mainPageStackLayout = new VerticalStackLayout
         {
             Spacing = 25,
             Padding = new Thickness(30, 0),
         };
-        foreach(var d in ((Models.AllItems)BindingContext).ItemTypes)
+        foreach (var d in ((Models.AllItems)BindingContext).ItemTypes)
         {
             if (d.Value == "int" || d.Value == "string")
             {
@@ -36,11 +39,13 @@ public partial class AddItem : ContentPage
                 label.Text = d.Key;
                 Editor editor = new Editor();
                 editor.Placeholder = $"Enter {d.Key}";
+                editor.Text = itemData[d.Key];
                 hLayout.Add(label);
                 hLayout.Add(editor);
                 allFields.Add(editor);
                 mainPageStackLayout.Add(hLayout);
-            } else if (d.Value == "picture")
+            }
+            else if (d.Value == "picture")
             {
                 HorizontalStackLayout hLayout = new HorizontalStackLayout();
                 Button button = new Button();
@@ -48,6 +53,7 @@ public partial class AddItem : ContentPage
                 button.Clicked += LoadImage;
                 Image image = new Image();
                 image.HeightRequest = 200;
+                image.Source = itemData[d.Key];
                 allFields.Add(image);
                 hLayout.Add(image);
                 hLayout.Add(button);
@@ -60,44 +66,53 @@ public partial class AddItem : ContentPage
                 label.Text = d.Key;
                 string[] values = d.Value.Split("_");
                 Picker p = new Picker();
+                for (int i =0; i < values.Length; i++ ) 
+                {
+                    if (values[i] == itemData[d.Key])
+                    {
+                        //Nie wiem czemu nie dziala, wersja z selected item tez jest zepsuta, zostawiam na koncowe poprawki, najwyzej tak zostanie 
+                        p.SelectedIndex = i;
+                    }
+                }
+                
                 hLayout.Add(label);
                 allFields.Add(p);
                 p.ItemsSource = values;
                 hLayout.Add(p);
                 mainPageStackLayout.Add(hLayout);
             }
-
+           
         }
-        Button AddButton = new Button
+        Button EditButton = new Button
         {
-            Text = "Add item",
+            Text = "Edit item",
         };
         Button ReturnButton = new Button { Text = "Return" };
-        AddButton.Clicked += Add_Item;
+        EditButton.Clicked += Edit_Item;
         ReturnButton.Clicked += ReturnButtonClicked;
-        mainPageStackLayout.Add(AddButton);
+        mainPageStackLayout.Add(EditButton);
         mainPageStackLayout.Add(ReturnButton);
         ScrollView mainPageScrollView = new ScrollView { Content = mainPageStackLayout };
         Content = mainPageScrollView;
         BatchCommit();
 
-
     }
 
-    private async void Add_Item(object sender, EventArgs e)
+    private async void Edit_Item(object sender, EventArgs e)
     {
-        
         List<string> valuesOfEditors = new List<string>();
-        foreach(var child in allFields)
+        foreach (var child in allFields)
         {
-            if(child is Editor)
+            if (child is Editor)
             {
                 valuesOfEditors.Add(((Editor)child).Text);
-            }else if(child is Picker)
+            }
+            else if (child is Picker)
             {
                 int selectedIndex = ((Picker)child).SelectedIndex;
                 valuesOfEditors.Add(((Picker)child).Items[selectedIndex]);
-            }else if(child is Image)
+            }
+            else if (child is Image)
             {
                 valuesOfEditors.Add(child.Source);
             }
@@ -107,19 +122,13 @@ public partial class AddItem : ContentPage
         int i = 0;
         if (valuesOfEditors.Count == ((Models.AllItems)BindingContext).ItemTypes.Count)
         {
-            foreach(var item in ((Models.AllItems)BindingContext).ItemTypes)
+            foreach (var item in ((Models.AllItems)BindingContext).ItemTypes)
             {
                 d.Add(item.Key, valuesOfEditors[i]);
                 i++;
             }
 
-            if (((Models.AllItems)BindingContext).getItem(d["Name"]) != null)
-            {
-                await DisplayAlert("Alert", "You already have this item in collection!", "OK");
-                return;
-            }
-
-            ((Models.AllItems)BindingContext).AddItem(((Models.AllItems)BindingContext).getColllectionName(), d);
+            ((Models.AllItems)BindingContext).EditItem(((Models.AllItems)BindingContext).getColllectionName(), d, itemIndex);
             ((Models.AllItems)BindingContext).LoadItems(((Models.AllItems)BindingContext).getColllectionName());
             await Shell.Current.GoToAsync($"//{nameof(Views.CollectionItems)}?{nameof(Views.CollectionItems.ItemId)}={((Models.AllItems)BindingContext).collectionName}");
         }
@@ -148,5 +157,4 @@ public partial class AddItem : ContentPage
     {
         await Shell.Current.GoToAsync($"//{nameof(Views.CollectionItems)}?{nameof(Views.CollectionItems.ItemId)}={((Models.AllItems)BindingContext).collectionName}");
     }
-
 }

@@ -12,6 +12,17 @@ public partial class Item : ContentView
     }
     public Item()
 	{
-		InitializeComponent();
-	}
+        InitializeComponent();
+        
+    }
+
+    protected override void OnBindingContextChanged()
+    {
+        base.OnBindingContextChanged();
+        
+        if (BindingContext != null && barcodeImage != null && ItemData != null)
+        {
+            barcodeImage.Source = ItemData["Picture"];
+        }
+    }
 }

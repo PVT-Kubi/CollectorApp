@@ -5,32 +5,39 @@
              x:Name="this">
     <Frame BindingContext="{x:Reference this}">
         <ScrollView>
-            <VerticalStackLayout>
-        
+            <HorizontalStackLayout>
+                <Image
+                x:Name="barcodeImage"
+                HeightRequest="200"
+                HorizontalOptions="Center" />
             
-                <CollectionView x:Name="studentsCollection"
-                     ItemsSource="{Binding ItemData}"
-                     Margin="20"
-                     SelectionMode="Single"
-                     >
+                <VerticalStackLayout>
+                  
+                   
+                    <CollectionView x:Name="studentsCollection"
+                         ItemsSource="{Binding ItemData}"
+                         Margin="20"
+                         SelectionMode="Single"
+                         >
 
 
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
-                    </CollectionView.ItemsLayout>
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
 
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout>
-                                <Label Text="{Binding Key}"/>
-                                <Label Text="{Binding Value}"/>
-                            </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout>
+                                    <Label Text="{Binding Key}"/>
+                                    <Label Text="{Binding Value}"/>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
             
         
-        </VerticalStackLayout>
+            </VerticalStackLayout>
+        </HorizontalStackLayout>
         </ScrollView>
     </Frame>
 </ContentView>

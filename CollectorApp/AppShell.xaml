@@ -22,5 +22,10 @@
         Title="AddItem"
         ContentTemplate="{DataTemplate v:AddItem}"
         Route="AddItem"/>
+    <ShellContent
+        Title="EditItem"
+        ContentTemplate="{DataTemplate v:EditItem}"
+        Route="EditItem"/>
+
 
 </Shell>
