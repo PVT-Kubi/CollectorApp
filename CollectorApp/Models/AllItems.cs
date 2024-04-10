@@ -11,6 +11,7 @@ namespace CollectorApp.Models
     internal class AllItems
     {
         public ObservableCollection<Item> Items { get; set; } = new ObservableCollection<Item>();
+        public ObservableCollection<string> ItemTypes { get; set; } = new ObservableCollection<string>();
         public string collectionName;
         public AllItems(string collectionName) {
             this.collectionName = collectionName;
@@ -54,12 +55,19 @@ namespace CollectorApp.Models
                         }
                         items.Add(item);
                     }
+
+
+                }
+                foreach(string column in itemColumns)
+                {
+                    ItemTypes.Add(column);
                 }
 
-                foreach (Item item in items) 
-                { 
+                foreach (Item item in items)
+                {
                     Items.Add(item);
                 }
+
             }
         }
 
@@ -78,18 +86,52 @@ namespace CollectorApp.Models
             {
                 if (!first)
                 {
-                    itemData += $"\n{i.Key}";
+                    itemData += $"\n{i.Value}";
                     first = true;
                 }
                 else
                 {
-                    itemData += $"\t{i.Key}";
+                    itemData += $"\t{i.Value}";
                 }
             }
 
             File.WriteAllText(path, itemData);
             Items.Add(item);
             return 0;
+        }
+
+        public void AddColumn(string cName, string columnName)
+        {
+            Item item = Items[0];
+            if(!item.Data.ContainsKey(columnName))
+            {
+                string path = Path.Combine(FileSystem.AppDataDirectory, $"{cName}.cl.txt");
+                string text = File.ReadAllText(path);
+                string newText = "";
+                string[] itemData = text.Split('\n');
+                int counter = 0;
+                foreach(string s in itemData)
+                {
+                    if (counter == 1)
+                    {
+                        newText += "\n" + s + $"\t{columnName}";
+                        counter ++;
+                    }
+                    else if(counter > 1)
+                    {
+                        newText +=  "\n" + s +"\t";
+                    }
+                    else
+                    {
+                        newText += s;
+                        counter++;
+                    }
+                }
+                ItemTypes.Add(collectionName);
+                
+                File.WriteAllText (path, newText);
+            }
+            
         }
     }
 }

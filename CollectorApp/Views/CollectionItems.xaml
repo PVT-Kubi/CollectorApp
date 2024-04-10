@@ -8,8 +8,10 @@
         <HorizontalStackLayout StyleClass="formInput">
             <Editor HeightRequest="10" Placeholder="Enter counter name" x:Name="StudentName"/>
             <Editor HeightRequest="10" Placeholder="Enter default value" x:Name="StudentSurname"/>
-            <Button Text="Dodaj ucznia" Clicked="Add_Student" StyleClass="addButton"/>
-            <Button Text="Wróć" Clicked="ReturnButtonClicked" />
+            <Editor HeightRequest="10" Placeholder="Enter default value" x:Name="ColumnName"/>
+            <Button Text="Add item" Clicked="Add_Item" StyleClass="addButton"/>
+            <Button Text="Return" Clicked="ReturnButtonClicked" />
+            <Button Text="Add Column" Clicked="AddColumnButtonClicked"/>
         </HorizontalStackLayout>
 
 

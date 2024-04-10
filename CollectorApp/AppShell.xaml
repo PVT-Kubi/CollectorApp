@@ -18,4 +18,9 @@
         ContentTemplate="{DataTemplate v:CollectionItems}"
         Route="CollectionItems"/>
 
+    <ShellContent
+        Title="AddItem"
+        ContentTemplate="{DataTemplate v:AddItem}"
+        Route="AddItem"/>
+
 </Shell>
