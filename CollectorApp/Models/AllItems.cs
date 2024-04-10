@@ -59,6 +59,7 @@ namespace CollectorApp.Models
         public void LoadItems(string cName)
         {
             Items.Clear();
+            ItemTypes.Clear();
 
             string path = FileSystem.AppDataDirectory;
             List<Item> items= new List<Item>();
@@ -166,6 +167,26 @@ namespace CollectorApp.Models
             }
             return 0;
            
+        }
+
+        public int DeleteItem(string iName)
+        {
+            string path = Path.Combine(FileSystem.AppDataDirectory, $"{collectionName}.cl.txt");
+            if (!File.Exists(path))
+                return 1;
+            string text = File.ReadAllText(path);
+            string[] itemsData = text.Split('\n');
+            List<string> newItems = new List<string>();
+            for (int i = 0; i < itemsData.Length; i++)
+            {
+                if (itemsData[i].Split('\t')[0] != iName)
+                {
+                    newItems.Add(itemsData[i]);
+                }
+            }
+            string newData = string.Join("\n", newItems);
+            File.WriteAllText(path, newData);
+            return 0;
         }
 
         public int EditItem(string cName, Dictionary<string, dynamic> data, int itemIndex)

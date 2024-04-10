@@ -1,23 +1,23 @@
-using CollectorApp.Models;
-
 namespace CollectorApp.Views;
+
 [QueryProperty(nameof(ItemData), nameof(ItemData))]
 public partial class EditItem : ContentPage
 {
     List<dynamic> allFields = new List<dynamic>();
     Dictionary<string, dynamic> itemData = new Dictionary<string, dynamic>();
-    public int itemIndex = 0; 
+    public int itemIndex = 0;
     public string ItemData
     {
         set { LoadItems(value); }
     }
     public EditItem()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 
     public void LoadItems(string itemName)
     {
+        allFields.Clear();
         string[] s = itemName.Split('_');
         BindingContext = new Models.AllItems(s[0]);
         itemData = ((Models.AllItems)BindingContext).getItem(s[1]).Data;
@@ -66,7 +66,7 @@ public partial class EditItem : ContentPage
                 label.Text = d.Key;
                 string[] values = d.Value.Split("_");
                 Picker p = new Picker();
-                for (int i =0; i < values.Length; i++ ) 
+                for (int i = 0; i < values.Length; i++)
                 {
                     if (values[i] == itemData[d.Key])
                     {
@@ -74,24 +74,27 @@ public partial class EditItem : ContentPage
                         p.SelectedIndex = i;
                     }
                 }
-                
+
                 hLayout.Add(label);
                 allFields.Add(p);
                 p.ItemsSource = values;
                 hLayout.Add(p);
                 mainPageStackLayout.Add(hLayout);
             }
-           
+
         }
         Button EditButton = new Button
         {
             Text = "Edit item",
         };
+        Button DeleteButton = new Button { Text = "Delete", };
         Button ReturnButton = new Button { Text = "Return" };
         EditButton.Clicked += Edit_Item;
         ReturnButton.Clicked += ReturnButtonClicked;
+        DeleteButton.Clicked += DeleteButtonClicked;
         mainPageStackLayout.Add(EditButton);
         mainPageStackLayout.Add(ReturnButton);
+        mainPageStackLayout.Add(DeleteButton);
         ScrollView mainPageScrollView = new ScrollView { Content = mainPageStackLayout };
         Content = mainPageScrollView;
         BatchCommit();
@@ -152,6 +155,22 @@ public partial class EditItem : ContentPage
 
         }
     }
+    private async void DeleteButtonClicked(object sender, EventArgs e)
+    {
+        string itemName = "";
+        foreach (var child in allFields)
+        {
+            if (child is Editor)
+            {
+                itemName = ((Editor)child).Text;
+                break;
+            }
+        }
+        ((Models.AllItems)BindingContext).DeleteItem(itemName);
+        ((Models.AllItems)BindingContext).LoadItems(((Models.AllItems)BindingContext).getColllectionName());
+        await Shell.Current.GoToAsync($"//{nameof(Views.CollectionItems)}?{nameof(Views.CollectionItems.ItemId)}={((Models.AllItems)BindingContext).collectionName}");
+    }
+
 
     private async void ReturnButtonClicked(object sender, EventArgs e)
     {

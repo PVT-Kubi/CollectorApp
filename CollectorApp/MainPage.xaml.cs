@@ -4,7 +4,7 @@ namespace CollectorApp
 {
     public partial class MainPage : ContentPage
     {
-        Models.Collection currentCollection = new Models.Collection();
+        
 
         public MainPage()
         {
@@ -22,7 +22,6 @@ namespace CollectorApp
             if (e.CurrentSelection.Count > 0)
             {
                 Models.Collection collection = (Models.Collection)e.CurrentSelection[0];
-                currentCollection = collection;
                 collectionsCollection.SelectedItem = null;
                 await Shell.Current.GoToAsync($"//{nameof(Views.CollectionItems)}?{nameof(Views.CollectionItems.ItemId)}={collection.CollectionName}");
             }
@@ -43,8 +42,16 @@ namespace CollectorApp
 
         private void Delete_Collection_Button_Clicked(object sender, EventArgs e)
         {
-            ((Models.AllCollections)BindingContext).DeleteCollection(currentCollection.CollectionName);
-            ((Models.AllCollections)BindingContext).LoadCollections();
+            Button b = sender as Button;
+            StackLayout s = b.Parent as StackLayout;
+            
+            Label lbl = s.Children.FirstOrDefault(x => x is Label) as Label;
+            if(lbl != null)
+            {
+                ((Models.AllCollections)BindingContext).DeleteCollection(lbl.Text);
+                ((Models.AllCollections)BindingContext).LoadCollections();
+            }
+
         }
 
     }

@@ -8,7 +8,7 @@ namespace CollectorApp.Views;
 [QueryProperty(nameof(CollectionName), nameof(CollectionName))]
 public partial class AddItem : ContentPage
 {
-    List<dynamic> allFields = new List<dynamic>();
+    private List<dynamic> allFields = new List<dynamic>();
     public string CollectionName
     {
         set { LoadItems(value); }
@@ -20,6 +20,7 @@ public partial class AddItem : ContentPage
 
     public void LoadItems(string name)
     {
+        allFields.Clear();
         BindingContext = new Models.AllItems(name);
         BatchBegin();
         VerticalStackLayout mainPageStackLayout = new VerticalStackLayout
@@ -122,6 +123,11 @@ public partial class AddItem : ContentPage
             ((Models.AllItems)BindingContext).AddItem(((Models.AllItems)BindingContext).getColllectionName(), d);
             ((Models.AllItems)BindingContext).LoadItems(((Models.AllItems)BindingContext).getColllectionName());
             await Shell.Current.GoToAsync($"//{nameof(Views.CollectionItems)}?{nameof(Views.CollectionItems.ItemId)}={((Models.AllItems)BindingContext).collectionName}");
+        }
+        else
+        {
+            await DisplayAlert("Alert", $"{valuesOfEditors.Count} {((Models.AllItems)BindingContext).ItemTypes.Count}", "OK");
+            return;
         }
     }
 

@@ -46,7 +46,7 @@ namespace CollectorApp.Models
                 return 1;
             }
 
-            File.WriteAllText(Path.Combine(appDataPath, collectionName), $"{name}\nName;string\tPrice;int\tState;nowy_używany_na-sprzedaż_sprzedany\tRating;int\tComment;string\tPicture;string");
+            File.WriteAllText(Path.Combine(appDataPath, collectionName), $"{name}\nName;string\tPrice;int\tState;nowy_używany_na-sprzedaż_sprzedany\tRating;int\tComment;string\tPicture;picture");
             LoadCollections();
             return 0;
         }

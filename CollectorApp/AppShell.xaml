@@ -26,6 +26,10 @@
         Title="EditItem"
         ContentTemplate="{DataTemplate v:EditItem}"
         Route="EditItem"/>
+    <ShellContent
+        Title="CollectionSummary"
+        ContentTemplate="{DataTemplate v:CollectionSummary}"
+        Route="CollectionSummary"/>
 
 
 </Shell>

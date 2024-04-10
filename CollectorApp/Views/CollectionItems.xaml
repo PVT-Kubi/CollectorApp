@@ -8,6 +8,7 @@
         <HorizontalStackLayout>
             <Button Text="Add item" Clicked="Add_Item" StyleClass="addButton"/>
             <Button Text="Return" Clicked="ReturnButtonClicked" />
+            <Button Text="Summary" Clicked="SummaryButtonClicked"/>
         </HorizontalStackLayout>
         <HorizontalStackLayout StyleClass="formInput">
             <Editor HeightRequest="10" Placeholder="Enter default value" x:Name="ColumnName"/>

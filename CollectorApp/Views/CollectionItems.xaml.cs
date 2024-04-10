@@ -71,5 +71,10 @@ public partial class CollectionItems : ContentPage
         ((Models.AllItems)BindingContext).AddColumn(((Models.AllItems)BindingContext).getColllectionName(), ColumnName.Text, clType);
         ((Models.AllItems)BindingContext).LoadItems(((Models.AllItems)BindingContext).getColllectionName());
     }
+    private async void SummaryButtonClicked(object sender, EventArgs e)
+    {
+        
+    }
+
 
 }
